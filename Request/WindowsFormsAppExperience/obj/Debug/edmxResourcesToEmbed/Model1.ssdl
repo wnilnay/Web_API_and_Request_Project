@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="For_TestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AccountData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="LoginAccount" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'For_Test.dbo.ExhibitionActivityWithHall' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="ExhibitionActivityWithHall">
+    <Key>
+      <PropertyRef Name="HallID" />
+      <PropertyRef Name="ActivityID" />
+    </Key>
+    <Property Name="HallID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ActivityID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HallWithStaff">
+    <Key>
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="HallID" />
+    </Key>
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="HallID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Responsibility" Type="int" />
+  </EntityType>
+  <EntityType Name="StaffData">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="EmployeeNumber" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="JobTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PreferedLanguage" Type="nvarchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TestData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="column1" Type="nvarchar(max)" />
+    <Property Name="column2" Type="nvarchar(max)" />
+    <Property Name="column3" Type="nvarchar(max)" />
+    <Property Name="column4" Type="nvarchar(max)" />
+    <Property Name="column5" Type="nvarchar(max)" />
+    <Property Name="column6" Type="nvarchar(max)" />
+    <Property Name="column7" Type="nvarchar(max)" />
+    <Property Name="column8" Type="nvarchar(max)" />
+    <Property Name="column9" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="TravelAgencyData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="GovRegistrationCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Tel" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="OfficialWebsite" Type="nvarchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TravelAgencyUserData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TravelAgencyID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_StaffData_AccountData">
+    <End Role="AccountData" Type="Self.AccountData" Multiplicity="1" />
+    <End Role="StaffData" Type="Self.StaffData" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AccountData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StaffData">
+        <PropertyRef Name="AccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TravelAgencyUserData_AccountData">
+    <End Role="AccountData" Type="Self.AccountData" Multiplicity="1" />
+    <End Role="TravelAgencyUserData" Type="Self.TravelAgencyUserData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccountData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TravelAgencyUserData">
+        <PropertyRef Name="AccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TravelAgencyUserData_TravelAgencyData">
+    <End Role="TravelAgencyData" Type="Self.TravelAgencyData" Multiplicity="1" />
+    <End Role="TravelAgencyUserData" Type="Self.TravelAgencyUserData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TravelAgencyData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TravelAgencyUserData">
+        <PropertyRef Name="TravelAgencyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="For_TestModelStoreContainer">
+    <EntitySet Name="AccountData" EntityType="Self.AccountData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HallWithStaff" EntityType="Self.HallWithStaff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StaffData" EntityType="Self.StaffData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestData" EntityType="Self.TestData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TravelAgencyData" EntityType="Self.TravelAgencyData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TravelAgencyUserData" EntityType="Self.TravelAgencyUserData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ExhibitionActivityWithHall" EntityType="Self.ExhibitionActivityWithHall" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ExhibitionActivityWithHall].[HallID] AS [HallID], 
+    [ExhibitionActivityWithHall].[ActivityID] AS [ActivityID]
+    FROM [dbo].[ExhibitionActivityWithHall] AS [ExhibitionActivityWithHall]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_StaffData_AccountData" Association="Self.FK_StaffData_AccountData">
+      <End Role="AccountData" EntitySet="AccountData" />
+      <End Role="StaffData" EntitySet="StaffData" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TravelAgencyUserData_AccountData" Association="Self.FK_TravelAgencyUserData_AccountData">
+      <End Role="AccountData" EntitySet="AccountData" />
+      <End Role="TravelAgencyUserData" EntitySet="TravelAgencyUserData" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TravelAgencyUserData_TravelAgencyData" Association="Self.FK_TravelAgencyUserData_TravelAgencyData">
+      <End Role="TravelAgencyData" EntitySet="TravelAgencyData" />
+      <End Role="TravelAgencyUserData" EntitySet="TravelAgencyUserData" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

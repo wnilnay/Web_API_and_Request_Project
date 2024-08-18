@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="For_TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AccountData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LoginAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="StaffData" Relationship="Self.FK_StaffData_AccountData" FromRole="AccountData" ToRole="StaffData" />
+    <NavigationProperty Name="TravelAgencyUserData" Relationship="Self.FK_TravelAgencyUserData_AccountData" FromRole="AccountData" ToRole="TravelAgencyUserData" />
+  </EntityType>
+  <EntityType Name="HallWithStaff">
+    <Key>
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="HallID" />
+    </Key>
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="HallID" Type="Guid" Nullable="false" />
+    <Property Name="Responsibility" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StaffData">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="EmployeeNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PreferedLanguage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AccountData" Relationship="Self.FK_StaffData_AccountData" FromRole="StaffData" ToRole="AccountData" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TestData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="column1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column5" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column6" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column7" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column8" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="column9" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TravelAgencyData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="GovRegistrationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Tel" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OfficialWebsite" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="TravelAgencyUserData" Relationship="Self.FK_TravelAgencyUserData_TravelAgencyData" FromRole="TravelAgencyData" ToRole="TravelAgencyUserData" />
+  </EntityType>
+  <EntityType Name="TravelAgencyUserData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="TravelAgencyID" Type="Guid" Nullable="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AccountData" Relationship="Self.FK_TravelAgencyUserData_AccountData" FromRole="TravelAgencyUserData" ToRole="AccountData" />
+    <NavigationProperty Name="TravelAgencyData" Relationship="Self.FK_TravelAgencyUserData_TravelAgencyData" FromRole="TravelAgencyUserData" ToRole="TravelAgencyData" />
+  </EntityType>
+  <EntityType Name="ExhibitionActivityWithHall">
+    <Key>
+      <PropertyRef Name="HallID" />
+      <PropertyRef Name="ActivityID" />
+    </Key>
+    <Property Name="HallID" Type="Guid" Nullable="false" />
+    <Property Name="ActivityID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_StaffData_AccountData">
+    <End Role="AccountData" Type="Self.AccountData" Multiplicity="1" />
+    <End Role="StaffData" Type="Self.StaffData" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AccountData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StaffData">
+        <PropertyRef Name="AccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TravelAgencyUserData_AccountData">
+    <End Role="AccountData" Type="Self.AccountData" Multiplicity="1" />
+    <End Role="TravelAgencyUserData" Type="Self.TravelAgencyUserData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccountData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TravelAgencyUserData">
+        <PropertyRef Name="AccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TravelAgencyUserData_TravelAgencyData">
+    <End Role="TravelAgencyData" Type="Self.TravelAgencyData" Multiplicity="1" />
+    <End Role="TravelAgencyUserData" Type="Self.TravelAgencyUserData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TravelAgencyData">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TravelAgencyUserData">
+        <PropertyRef Name="TravelAgencyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="For_TestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AccountData" EntityType="Self.AccountData" />
+    <EntitySet Name="HallWithStaff" EntityType="Self.HallWithStaff" />
+    <EntitySet Name="StaffData" EntityType="Self.StaffData" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="TestData" EntityType="Self.TestData" />
+    <EntitySet Name="TravelAgencyData" EntityType="Self.TravelAgencyData" />
+    <EntitySet Name="TravelAgencyUserData" EntityType="Self.TravelAgencyUserData" />
+    <EntitySet Name="ExhibitionActivityWithHall" EntityType="Self.ExhibitionActivityWithHall" />
+    <AssociationSet Name="FK_StaffData_AccountData" Association="Self.FK_StaffData_AccountData">
+      <End Role="AccountData" EntitySet="AccountData" />
+      <End Role="StaffData" EntitySet="StaffData" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TravelAgencyUserData_AccountData" Association="Self.FK_TravelAgencyUserData_AccountData">
+      <End Role="AccountData" EntitySet="AccountData" />
+      <End Role="TravelAgencyUserData" EntitySet="TravelAgencyUserData" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TravelAgencyUserData_TravelAgencyData" Association="Self.FK_TravelAgencyUserData_TravelAgencyData">
+      <End Role="TravelAgencyData" EntitySet="TravelAgencyData" />
+      <End Role="TravelAgencyUserData" EntitySet="TravelAgencyUserData" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
